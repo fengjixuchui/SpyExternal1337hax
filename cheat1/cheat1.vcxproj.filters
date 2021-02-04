@@ -36,7 +36,10 @@
     <ClInclude Include="obfuscator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="managers.h">
+    <ClInclude Include="bsp_parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

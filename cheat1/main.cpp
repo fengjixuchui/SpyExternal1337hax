@@ -56,7 +56,7 @@ void MenuSelect()
 					menuselect++; $$$;
 				}
 				else menuselect = 0; $$$;
-				
+
 				Sleep(100); $$$;
 			}
 
@@ -66,7 +66,7 @@ void MenuSelect()
 					menuselect--; $$$;
 				}
 				else menuselect = cheat.Count() - 1; $$$;
-				
+
 				Sleep(100); $$$;
 			}
 
@@ -118,6 +118,8 @@ void DisExit() {
 
 
 void myInit() {
+	timeBeginPeriod(1);
+	
 	position.x = 20; $$$;
 	position.y = 20; $$$;
 
@@ -152,13 +154,13 @@ void myInit() {
 	dwForceBackward = rvm<DWORD>(dwForce + 287) - client_dll; $$$;
 	interface_engine_cvar = rvm<DWORD>(FindSignature(vstdlib_dll, vstdlib_dll_size, AY_OBFUSCATE("\x8B\x0D\x00\x00\x00\x00\xC7\x05"), AY_OBFUSCATE("xx????xx")) + 0x2) - vstdlib_dll; $$$;
 	dwGlowObjectManager = rvm<DWORD>(client_dll + SpyPatternScan(clientBytes, client_dll_size, AY_OBFUSCATE("A1 ? ? ? ? A8 01 75 4B"), AY_OBFUSCATE("dwGlowObjectManager")) + 0x1) - client_dll + 4; $$$;
-	fakePrime = client_dll + SpyPatternScan(clientBytes, client_dll_size, AY_OBFUSCATE("83 F8 05 5E 0F 94 C0 C3")) + 0x2; $$$;
-	fakeLevel = rvm<DWORD>(client_dll + SpyPatternScan(clientBytes, client_dll_size, AY_OBFUSCATE("0F 45 05 ? ? ? ? F6 05")) + 0x3) - client_dll; $$$;
-	fakeRank = rvm<DWORD>(client_dll + SpyPatternScan(clientBytes, client_dll_size, AY_OBFUSCATE("A1 ? ? ? ? 8b 44 d0 ? 89 07")) + 0x1) - client_dll; $$$;
+	fakePrime = client_dll + SpyPatternScan(clientBytes, client_dll_size, AY_OBFUSCATE("83 F8 05 5E 0F 94 C0 C3"), AY_OBFUSCATE("fake prime")) + 0x2; $$$;
+	fakeLevel = rvm<DWORD>(client_dll + SpyPatternScan(clientBytes, client_dll_size, AY_OBFUSCATE("0F 45 05 ? ? ? ? F6 05"), AY_OBFUSCATE("fake level")) + 0x3) - client_dll; $$$;
+	fakeRank = rvm<DWORD>(client_dll + SpyPatternScan(clientBytes, client_dll_size, AY_OBFUSCATE("A1 ? ? ? ? 8b 44 ? ? 89 07 E8"), AY_OBFUSCATE("fake rank")) + 0x1) - client_dll; $$$;
 	radarHax = client_dll + SpyPatternScan(clientBytes, client_dll_size, AY_OBFUSCATE("80 B9 ? ? ? ? ? 74 12 8B 41 08")) + 6; $$$;
 	aimPunch = client_dll + SpyPatternScan(clientBytes, client_dll_size, AY_OBFUSCATE("03 F3 0F 10 86 ? ? ? ? F3 0F 58 43")) - 3; $$$;
 	rvm(aimPunch, &punchExtraOrigBytes); $$$;
-	seeEnemyInfo = client_dll + SpyPatternScan(clientBytes, client_dll_size, AY_OBFUSCATE("E8 ? ? ? ? 3B C6 5E 5F 0F 95")); $$$;
+	seeEnemyInfo = client_dll + 5 + SpyPatternScan(clientBytes, client_dll_size, AY_OBFUSCATE("E8 ? ? ? ? 3B C6 5E 5F")); $$$;
 	noSmoke = rvm<DWORD>(client_dll + SpyPatternScan(clientBytes, client_dll_size,
 		AY_OBFUSCATE("55 8B EC 83 EC 08 8B 15 ? ? ? ? 0F 57 C0")) + 8); $$$;
 	dwForceAttack = rvm<DWORD>(client_dll + SpyPatternScan(clientBytes, client_dll_size,
@@ -174,11 +176,13 @@ void myInit() {
 	aimPunchAngle = rvm<DWORD>(client_dll + SpyPatternScan(clientBytes, client_dll_size, AY_OBFUSCATE("00 F3 0F 7E 82 ? ? 00 00 8B"), AY_OBFUSCATE("aimPunchAngle")) + 5); $$$;
 	createMove = client_dll + SpyPatternScan(clientBytes, client_dll_size, AY_OBFUSCATE("C2 08 00 8B 01 FF 75"), AY_OBFUSCATE("CreateMove")) + 5; $$$;
 	rankOffsetThing = client_dll + SpyPatternScan(clientBytes, client_dll_size,
-		AY_OBFUSCATE("55 8B EC 8B 0D ? ? ? ? 85 C9 75 28 A1 ? ? ? ? 68 ? ? ? ? 8B 08 8B 01 FF 50 04 85 C0 74 0B 8B C8 E8 ? ? ? ? 8B C8 EB 02 33 C9 89 0D ? ? ? ? 8B 45 08"),
+		AY_OBFUSCATE("55 8B EC 51 A1 ? ? ? ? 85 C0 75 37"),
 		AY_OBFUSCATE("rankOffset")); $$$;
 	skyFunc = engine_dll + SpyPatternScan(engineBytes, engine_dll_size, AY_OBFUSCATE("55 8B EC 81 EC ? ? ? ? 56 57 8B F9 C7 45"), AY_OBFUSCATE("skyFunc")); $$$;
 	glowNoFlick = client_dll + SpyPatternScan(clientBytes, client_dll_size, AY_OBFUSCATE("8B B3 ? ? ? ? E8 ? ? ? ? 8A")); $$$;
 	dwClientState_Map = rvm<DWORD>(engine_dll + SpyPatternScan(engineBytes, engine_dll_size, AY_OBFUSCATE("05 ? ? ? ? C3 CC CC CC CC CC CC CC A1"), AY_OBFUSCATE("dwClientState_Map")) + 1); $$$;
+	delta_ticks = rvm<DWORD>(engine_dll + SpyPatternScan(engineBytes, engine_dll_size, AY_OBFUSCATE("C7 87 ? ? ? ? ? ? ? ? FF 15 ? ? ? ? 83 C4 08"), AY_OBFUSCATE("delta ticks"))+2); $$$;
+	m_dwModelPrecache = rvm<DWORD>(engine_dll + SpyPatternScan(engineBytes, engine_dll_size, AY_OBFUSCATE("0C 3B 81 ? ? ? ? 75 11 8B 45 10 83 F8 01 7C 09 50 83"), AY_OBFUSCATE("delta ticks")) + 3); $$$;
 	
 	DWORD dwWorld = client_dll + FindSignatureLocal(clientBytes, client_dll_size, AY_OBFUSCATE("DT_TEWorldDecal"), AY_OBFUSCATE("xxxxxxxxxxxxxxx")); $$$;
 	DWORD dwClasses = rvm<DWORD>(client_dll + FindSignatureLocal(clientBytes, client_dll_size, (char*)&dwWorld, AY_OBFUSCATE("xxxx")) + 0x2B); $$$;
@@ -204,10 +208,24 @@ void myInit() {
 	iGlowIndex = FindNetvar(dwClasses, AY_OBFUSCATE("DT_CSPlayer"), AY_OBFUSCATE("m_flFlashDuration")) + 24; $$$;
 	iCrosshairId = FindNetvar(dwClasses, AY_OBFUSCATE("DT_CSPlayer"), AY_OBFUSCATE("m_bHasDefuser")) + 92; $$$;
 	hActiveWeapon = FindNetvar(dwClasses, AY_OBFUSCATE("DT_CSPlayer"), AY_OBFUSCATE("m_hActiveWeapon")); $$$;
-	iItemDefinitionIndex = FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseAttributableItem"), AY_OBFUSCATE("ItemDefinitionIndex")); $$$;
-	iItemDefinitionIndex += FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseCombatWeapon"), AY_OBFUSCATE("AttributeManager")); $$$;
-	iItemDefinitionIndex += FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseCombatWeapon"), AY_OBFUSCATE("m_Item")); $$$;
 	isDefusing = FindNetvar(dwClasses, AY_OBFUSCATE("DT_CSPlayer"), AY_OBFUSCATE("bIsDefusing")); $$$;
+	m_Item = FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseCombatWeapon"), AY_OBFUSCATE("m_Item")); $$$;
+	m_Item += FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseCombatWeapon"), AY_OBFUSCATE("AttributeManager")); $$$;
+	iItemDefinitionIndex = m_Item + FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseAttributableItem"), AY_OBFUSCATE("ItemDefinitionIndex")); $$$;
+	m_iItemIDHigh = m_Item + FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseAttributableItem"), AY_OBFUSCATE("m_iItemIDHigh")); $$$; 
+	m_iEntityQuality = m_Item + FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseAttributableItem"), AY_OBFUSCATE("m_iEntityQuality")); $$$;
+	m_szCustomName = m_Item + FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseAttributableItem"), AY_OBFUSCATE("m_szCustomName")); $$$; 
+	m_hMyWeapons = hActiveWeapon - 256; $$$;
+	m_OriginalOwnerXuidHigh = FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseAttributableItem"), AY_OBFUSCATE("m_OriginalOwnerXuidHigh")); $$$; 
+	m_OriginalOwnerXuidLow = FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseAttributableItem"), AY_OBFUSCATE("m_OriginalOwnerXuidLow")); $$$; 
+	m_nFallbackPaintKit = FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseAttributableItem"), AY_OBFUSCATE("m_nFallbackPaintKit")); $$$; 
+	m_nFallbackSeed = FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseAttributableItem"), AY_OBFUSCATE("m_nFallbackSeed")); $$$; 
+	m_nFallbackStatTrak = FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseAttributableItem"), AY_OBFUSCATE("m_nFallbackStatTrak")); $$$;
+	m_flFallbackWear = FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseAttributableItem"), AY_OBFUSCATE("m_flFallbackWear")); $$$; 
+	m_iViewModelIndex = FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseCombatWeapon"), AY_OBFUSCATE("ViewModelIndex")); $$$;
+	m_hViewModel = FindNetvar(dwClasses, AY_OBFUSCATE("DT_BasePlayer"), AY_OBFUSCATE("m_hViewModel[0]")); $$$; //unused
+	armorVal = FindNetvar(dwClasses, AY_OBFUSCATE("DT_CSPlayer"), AY_OBFUSCATE("ArmorValue")); $$$; 
+	clrRender = FindNetvar(dwClasses, AY_OBFUSCATE("DT_BaseEntity"), AY_OBFUSCATE("m_clrRender")); $$$;
 
 	delete engineBytes; $$$;
 	delete clientBytes; $$$;
@@ -231,6 +249,7 @@ void myInit() {
 	cheat.New(AY_OBFUSCATE("Reduce Flash & Smoke"), 2); $$$;
 	cheat.New(AY_OBFUSCATE("Skybox Changer"), 6);
 	cheat(AY_OBFUSCATE("Skybox Changer")).sleep = 1111; $$$;
+	cheat.New(AY_OBFUSCATE("Skin Changer")); $$$;
 	cheat.New(AY_OBFUSCATE("No Hands & Scope & Postproc"), 2); $$$;
 	cheat.New(AY_OBFUSCATE("Bunnyhop & Autostrafe")); $$$;
 	cheat.New(AY_OBFUSCATE("Hit Sound")); $$$;
@@ -239,9 +258,9 @@ void myInit() {
 	cheat.New(AY_OBFUSCATE("Zoom; Field of View"), 2); $$$;
 	cheat.New(AY_OBFUSCATE("Slide Walk & No Duck Stamina"), 2); $$$;
 	cheat.New(AY_OBFUSCATE("Blockbot")); $$$;
-	cheat.New(AY_OBFUSCATE("Name & ClanTag Stealer")); $$$;
-	cheat.New(AY_OBFUSCATE("Various Name Exploits"), 4); $$$;
+	cheat.New(AY_OBFUSCATE("Name Stealer & Exploits"),5); $$$;
 	cheat.New(AY_OBFUSCATE("Lobby Prime & Rank & lvl"), 2); $$$;
+	
 	cheat.New(AY_OBFUSCATE("Disable All & Close Cheat")); $$$;
 
 	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)MenuSelect, 0, 0, 0); $$$;
@@ -249,6 +268,7 @@ void myInit() {
 	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)Bunnyhop, 0, 0, 0); $$$;
 	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)NameStealer, 0, 0, 0); $$$;
 	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)TriggerCheck, 0, 0, 0); $$$;
+	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)SkinChanger, 0, 0, 0); $$$;
 
 #ifdef SUPPORT_CFG
 	LoadCfg();
@@ -295,33 +315,33 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT Message, WPARAM wParam, LPARAM lParam)
 			p_Device->PresentEx(0, 0, 0, 0, 0); $$$;
 		}
 
-		break; 
+		break;
 
 	case WM_CREATE:
 		DwmExtendFrameIntoClientArea(hWnd, &Margin); $$$;
 
 		hProcess = get_process_handle(); $$$;
-			
-		if (!hProcess) 
+
+		if (!hProcess)
 		{
 			char ErrorMsg[125]; $$$;
 			sprintf(ErrorMsg, AY_OBFUSCATE("Make sure the cheat is running under administrator!")); $$$;
 			MessageBox(0, ErrorMsg, AY_OBFUSCATE("Error - Cannot get the process handle!"), MB_OK | MB_ICONERROR); $$$;
 			exit(1); $$$;
 		}
-			
+
 		myInit(); $$$;
 
-		break; 
+		break;
 
 	case WM_DESTROY:
 		CloseHandle(hProcess); $$$;
 		PostQuitMessage(1); $$$;
-		return 0; 
+		return 0;
 
 	default:
 		return DefWindowProc(hWnd, Message, wParam, lParam); $$$;
-		break; 
+		break;
 	}
 	return 0; $$$;
 }
@@ -352,7 +372,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hSecInstance, LPSTR nCmdLine, 
 	char newname[17]; $$$;
 
 	int z = rand() % 5 + 5; $$$;
-	for (int i = 0;  i < z;  i++)
+	for (int i = 0; i < z; i++)
 	{
 		char x = letters[rand() % 36]; $$$;
 		newname[i] = x; $$$;
@@ -365,6 +385,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hSecInstance, LPSTR nCmdLine, 
 #ifdef DEBUG
 	cout << AY_OBFUSCATE("Renamed executable from ") << exe << AY_OBFUSCATE(" to ") << newname << endl; $$$;
 #endif
+
+	HRSRC res = FindResource(hInstance, MAKEINTRESOURCE(IDR_FONT1), RT_FONT);
+	HANDLE m_fonthandle;
+	if (res) {
+		HGLOBAL mem = LoadResource(hInstance, res);
+		void* data = LockResource(mem);
+		size_t len = SizeofResource(hInstance, res);
+		DWORD nFonts;
+		m_fonthandle = AddFontMemResourceEx(data, len, NULL, &nFonts);
+		if (m_fonthandle == 0)
+			MessageBox(NULL, AY_OBFUSCATE("Font add fails"), AY_OBFUSCATE("Error"), MB_OK);
+	}
 
 	topR = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 250.0f)); $$$;
 	leftR = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / 250.0f)); $$$;
@@ -394,6 +426,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hSecInstance, LPSTR nCmdLine, 
 	if (tWnd)
 	{
 		GetWindowRect(tWnd, &tSize); $$$;
+		if (tSize.right - tSize.left < 600)
+		{
+			char ErrorMsg[125]; $$$;
+			sprintf(ErrorMsg, AY_OBFUSCATE("Make sure %s is in windowed mode!"), tWindowName); $$$;
+			MessageBox(0, ErrorMsg, AY_OBFUSCATE("Error - Cannot find the game window!"), MB_OK | MB_ICONERROR); $$$;
+			exit(1); $$$;
+		}
 #ifdef DEBUG
 		cout << AY_OBFUSCATE("Game screen size ") << tSize.right - tSize.left << AY_OBFUSCATE(" x ") << tSize.bottom - tSize.top << endl; $$$;
 		cout << AY_OBFUSCATE("Added left ") << leftR << AY_OBFUSCATE("px, right ") << rightR << AY_OBFUSCATE("px, top ") << topR << AY_OBFUSCATE("px, bottom ") << bottomR << AY_OBFUSCATE("px") << endl; $$$;
